@@ -4,14 +4,21 @@ This module is about reverse engineering.
 
 - [Reverse Engineering](#reverse-engineering)
   - [GDB baby step 1](#gdb-baby-step-1)
-    - [Thought process and approach:](#thought-process-and-approach)
-    - [Resources used:](#resources-used)
-    - [Concepts and knowledge gained:](#concepts-and-knowledge-gained)
+    - [Thought process and approach](#thought-process-and-approach)
+    - [Resources used](#resources-used)
+    - [Concepts and knowledge gained](#concepts-and-knowledge-gained)
     - [The FLAG:](#the-flag)
+  - [ARMssembly 1](#armssembly-1)
+    - [Thought process and approach](#thought-process-and-approach-1)
+    - [Resources used](#resources-used-1)
+    - [Concepts learnt and knowledge gained](#concepts-learnt-and-knowledge-gained)
+    - [Incorrect tangents](#incorrect-tangents)
+    - [The FLAG](#the-flag-1)
+  - [Vault door 3](#vault-door-3)
 
 ## GDB baby step 1
 
-### Thought process and approach:
+### Thought process and approach
 
 Firstly I donwloaded the `debugger0_a` file from the website. I used the `file` command to check what kind of a file it is.
 
@@ -67,13 +74,13 @@ The website expects us to give the answer in decimal and memory addresses are in
 ![](https://i.imgur.com/HjGn51F.png)
 
 
-### Resources used:
+### Resources used
 
 - https://gist.github.com/jarun/ea47cc31f1b482d5586138472139d090 - Very Useful
 - https://www.eecg.utoronto.ca/~amza/www.mindsec.com/files/x86regs.html
 - https://www.cs.virginia.edu/~evans/cs216/guides/x86.html#:~:text=The%20mov%20instruction%20copies%20the,to%2Dmemory%20moves%20are%20not
 
-### Concepts and knowledge gained:
+### Concepts and knowledge gained
 
 - Learnt about the basic usage of `gdb`.
 - Got an idea of what registers are and their uses.
@@ -85,3 +92,168 @@ The website expects us to give the answer in decimal and memory addresses are in
 I followed the flag format of PicoCTF and got the flag:
 
 **```picoCTF{549698}```**
+
+## ARMssembly 1
+
+### Thought process and approach
+
+Firstly I donwloaded the file the website and then ran the `file` command to see what kind of a file is. 
+
+```
+./chall_1.S: assembler source, ASCII text
+```
+
+I use `cat` to print out the contents of the file.
+
+```
+	.arch armv8-a
+	.file	"chall_1.c"
+	.text
+	.align	2
+	.global	func
+	.type	func, %function
+func:
+	sub	sp, sp, #32
+	str	w0, [sp, 12]
+	mov	w0, 79
+	str	w0, [sp, 16]
+	mov	w0, 7
+	str	w0, [sp, 20]
+	mov	w0, 3
+	str	w0, [sp, 24]
+	ldr	w0, [sp, 20]
+	ldr	w1, [sp, 16]
+	lsl	w0, w1, w0
+	str	w0, [sp, 28]
+	ldr	w1, [sp, 28]
+	ldr	w0, [sp, 24]
+	sdiv	w0, w1, w0
+	str	w0, [sp, 28]
+	ldr	w1, [sp, 28]
+	ldr	w0, [sp, 12]
+	sub	w0, w1, w0
+	str	w0, [sp, 28]
+	ldr	w0, [sp, 28]
+	add	sp, sp, 32
+	ret
+	.size	func, .-func
+	.section	.rodata
+	.align	3
+.LC0:
+	.string	"You win!"
+	.align	3
+.LC1:
+	.string	"You Lose :("
+	.text
+	.align	2
+	.global	main
+	.type	main, %function	.file	"chall_1.c"
+main:
+	stp	x29, x30, [sp, -48]!
+	add	x29, sp, 0
+	str	w0, [x29, 28]
+	str	x1, [x29, 16]
+	ldr	x0, [x29, 16]
+	add	x0, x0, 8
+	ldr	x0, [x0]
+	bl	atoi
+	str	w0, [x29, 44]
+	ldr	w0, [x29, 44]
+	bl	func
+	cmp	w0, 0
+	bne	.L4
+	adrp	x0, .LC0
+	add	x0, x0, :lo12:.LC0
+	bl	puts
+	b	.L6
+.L4:
+	adrp	x0, .LC1
+	add	x0, x0, :lo12:.LC1
+	bl	puts
+.L6:
+	nop
+	ldp	x29, x30, [sp], 48
+	ret
+	.size	main, .-main
+	.ident	"GCC: (Ubuntu/Linaro 7.5.0-3ubuntu1~18.04) 7.5.0"
+	.section	.note.GNU-stack,"",@progbits
+```
+
+I read through the assembly code and noticed the line - `	.file	"chall_1.c"`. I don't  exactly understand what it means but I think that this assembly code was generated from a c program namely - `chall_1.c`.
+
+I found a an [ARM instruction set online](https://iitd-plos.github.io/col718/ref/arm-instructionset.pdf) and found out what each command does.
+
+The program essentially calls a function with an argument and prints out `win` if the value returned by the function is equal to `0` otherwise prits `lose`. So we need to find out the argument that would make the function return 0.
+
+I look at the function code and try to understand what it does:
+
+```	str	w0, [sp, 12]```
+
+This line stores the argument passed by the main program in the location `[sp, 12]`.
+
+```
+mov	w0, 79
+str	w0, [sp, 16]
+mov	w0, 7
+str	w0, [sp, 20]
+mov	w0, 3
+str	w0, [sp, 24]
+```
+
+In this snippet of code, 79, 7 and 3 are getting stored in [sp, 16], [sp, 20] and [sp, 24] respectively. They first store the value in the `w0` register and then use `str` to copy it into the memory.
+
+```
+ldr	w0, [sp, 20]
+ldr	w1, [sp, 16]
+lsl	w0, w1, w0
+str	w0, [sp, 28]
+
+```
+In this snippet of code, `7` is being loaded into `w0` from `[sp, 20]` and `79` is being loaded into `w1` from `[sp, 16]`. Then a left shift operation is being performed - `79 << 7` and the result - `10112` is stored in `w1` which is then stored in `[sp, 28]`.
+
+```
+    ldr	w1, [sp, 28]
+    ldr	w0, [sp, 24]
+    sdiv	w0, w1, w0
+    str	w0, [sp, 28]
+```
+In this snippet of code, the result from the previous operation is being loaded into `w1` from `[sp, 28]` and `3` is being loaded into `w0` from `[sp, 24]`. Then division is performed - `10112 / 3` and the result - `3370` is being stored in `w0` which is then stored in `[sp, 28]`
+
+```
+ldr	w1, [sp, 28]
+ldr	w0, [sp, 12]
+sub	w0, w1, w0
+str	w0, [sp, 28]
+ldr	w0, [sp, 28]
+add	sp, sp, 32
+ret
+```
+In this snippet of code, the result from the previous operation is being loaded into `w1` from `[sp, 28]` and the argument passed onto the function is loaded into `w0` from `[sp, 12]`. Then subraction is performed - `3370 - X` and stores it into `w0` which is then returned by the function. 
+
+The return value should be 0 so `3370 - X = 0` therefore `X = 3370`. The argument should be `3370`. I convert it to hexadecimal using an online editor
+
+![](https://i.imgur.com/WqHbKPE.png)
+
+### Resources used
+
+- https://iitd-plos.github.io/col718/ref/arm-instructionset.pdf
+- google 
+
+### Concepts learnt and knowledge gained
+
+- Learnt more about assembly and it's instructions.
+- Learnt about arithmetic operations in assembly.
+  
+### Incorrect tangents 
+
+I was trying to find ways to convert the assembly code into C for better understanding but I don't think there's any way to do that
+
+
+### The FLAG
+
+Following the flag format of picoCTF and the instructions provided, the flag is:
+
+**```picoCTF{00000d2a}```**
+
+## Vault door 3
+
