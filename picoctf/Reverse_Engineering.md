@@ -3,18 +3,18 @@
 This module is about reverse engineering.
 
 - [Reverse Engineering](#reverse-engineering)
-  - [GDB baby step 1](#gdb-baby-step-1)
-    - [Thought process and approach](#thought-process-and-approach)
-    - [Resources used](#resources-used)
-    - [Concepts and knowledge gained](#concepts-and-knowledge-gained)
-    - [The FLAG:](#the-flag)
-  - [ARMssembly 1](#armssembly-1)
-    - [Thought process and approach](#thought-process-and-approach-1)
-    - [Resources used](#resources-used-1)
-    - [Concepts learnt and knowledge gained](#concepts-learnt-and-knowledge-gained)
-    - [Incorrect tangents](#incorrect-tangents)
-    - [The FLAG](#the-flag-1)
-  - [Vault door 3](#vault-door-3)
+	- [GDB baby step 1](#gdb-baby-step-1)
+		- [Thought process and approach](#thought-process-and-approach)
+		- [Resources used](#resources-used)
+		- [Concepts and knowledge gained](#concepts-and-knowledge-gained)
+		- [The FLAG:](#the-flag)
+	- [ARMssembly 1](#armssembly-1)
+		- [Thought process and approach](#thought-process-and-approach-1)
+		- [Resources used](#resources-used-1)
+		- [Concepts learnt and knowledge gained](#concepts-learnt-and-knowledge-gained)
+		- [Incorrect tangents](#incorrect-tangents)
+		- [The FLAG](#the-flag-1)
+	- [Vault door 3](#vault-door-3)
 
 ## GDB baby step 1
 
@@ -91,7 +91,9 @@ The website expects us to give the answer in decimal and memory addresses are in
 
 I followed the flag format of PicoCTF and got the flag:
 
-**```picoCTF{549698}```**
+```
+picoCTF{549698}
+```
 
 ## ARMssembly 1
 
@@ -253,7 +255,9 @@ I was trying to find ways to convert the assembly code into C for better underst
 
 Following the flag format of picoCTF and the instructions provided, the flag is:
 
-**```picoCTF{00000d2a}```**
+``` 
+picoCTF{00000d2a}
+```
 
 ## Vault door 3
 
