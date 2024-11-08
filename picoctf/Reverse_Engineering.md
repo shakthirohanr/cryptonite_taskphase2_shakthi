@@ -15,6 +15,10 @@ This module is about reverse engineering.
 		- [Incorrect tangents](#incorrect-tangents)
 		- [The FLAG](#the-flag-1)
 	- [Vault door 3](#vault-door-3)
+		- [Thought process and approach](#thought-process-and-approach-2)
+		- [Resources used](#resources-used-2)
+		- [Concepts and knowledge gained](#concepts-and-knowledge-gained-1)
+		- [The FLAG](#the-flag-2)
 
 ## GDB baby step 1
 
@@ -261,3 +265,92 @@ picoCTF{00000d2a}
 
 ## Vault door 3
 
+### Thought process and approach
+
+Firstly I downloaded the `VaultDoor3.java` file from the website. Then I opened it in VSC to analyze it. 
+
+```
+import java.util.*;
+
+class VaultDoor3 {
+    public static void main(String args[]) {
+        VaultDoor3 vaultDoor = new VaultDoor3();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter vault password: ");
+        String userInput = scanner.next();
+	String input = userInput.substring("picoCTF{".length(),userInput.length()-1);
+	if (vaultDoor.checkPassword(input)) {
+	    System.out.println("Access granted.");
+	} else {
+	    System.out.println("Access denied!");
+        }
+    }
+
+    // Our security monitoring team has noticed some intrusions on some of the
+    // less secure doors. Dr. Evil has asked me specifically to build a stronger
+    // vault door to protect his Doomsday plans. I just *know* this door will
+    // keep all of those nosy agents out of our business. Mwa ha!
+    //
+    // -Minion #2671
+    public boolean checkPassword(String password) {
+        if (password.length() != 32) {
+            return false;
+        }
+        char[] buffer = new char[32];
+        int i;
+        for (i=0; i<8; i++) {
+            buffer[i] = password.charAt(i);
+        }
+        for (; i<16; i++) {
+            buffer[i] = password.charAt(23-i);
+        }
+        for (; i<32; i+=2) {
+            buffer[i] = password.charAt(46-i);
+        }
+        for (i=31; i>=17; i-=2) {
+            buffer[i] = password.charAt(i);
+        }
+        String s = new String(buffer);
+        return s.equals("jU5t_a_sna_3lpm18gb41_u_4_mfr340");
+    }
+}
+
+```
+I understood that the input we provide should be equal to `jU5t_a_sna_3lpm18gb41_u_4_mfr340` after all the substitutions performed by the program. We can just reverse the substitutions performed on the string to get our flag so I wrote a python script to do this:
+
+```
+string = "jU5t_a_sna_3lpm18gb41_u_4_mfr340"
+output = [''] * 32
+
+for i in range(8):
+    output[i] = string[i]
+for i in range(8, 16):
+    output[i] = string[23 - i]
+for i in range(16, 32, 2):
+    output[i] = string[46 - i]
+for i in range(31, 16, -2):
+    output[i] = string[i]
+
+output = ''.join(output)
+print(f"picoCTF{{{output}}}")
+```
+
+Running the script gave me the flag.
+
+
+### Resources used
+
+- Python
+
+### Concepts and knowledge gained
+
+- Learnt about the basic syntax of Java. 
+- Learnt basic python syntax.
+
+### The FLAG
+
+Following the flag format of picoCTF, I got the following flag:
+
+```
+picoCTF{jU5t_a_s1mpl3_an4gr4m_4_u_1fb380}
+```
