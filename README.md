@@ -18,4 +18,4 @@ This repository contains all my writeups for PicoCTF challenges.
 
 ## Profile 
 
-[shakthirohanr](https://play.picoctf.org/users/shakthirohanr)t
+[shakthirohanr](https://play.picoctf.org/users/shakthirohanr)
