@@ -12,6 +12,7 @@ This repository contains all my writeups for cryptonite task phase 2.
 [picoCTF](https://play.picoctf.org/users/shakthirohanr)
 
 [Advent of Cyber]()
+
 ## Table of Contents
 
   ### PicoCTF
@@ -26,7 +27,8 @@ This repository contains all my writeups for cryptonite task phase 2.
    - [C3](./picoctf/Cryptography.md#c3)
  - [Binary Exploitation](./picoctf/Binary_Exploitation.md)
   
-  ### NiteCTF
+  ### NiteCTF 
 
+  - [Index](./nitectf/README.md)
   - [tet-triffic!](./nitectf/tet-triffic.md)
 

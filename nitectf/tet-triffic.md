@@ -1,5 +1,7 @@
 # tet-triffic!
 
+![](https://i.imgur.com/aLecoHm.png)
+
 I downloaded the files and found a `pcap` file and a python file. 
 
 On insepecting the python file, I found that it was an implementation of the game tetris. The game had predefined blocks and had different coloured blocks aswell. I thought that completed game would have the written out flag.
