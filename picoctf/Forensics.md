@@ -8,6 +8,16 @@ This module is about forensics.
     - [Resources used](#resources-used)
     - [Concept and knowledge gained](#concept-and-knowledge-gained)
     - [The FLAG:](#the-flag)
+  - [tunn3l v1s10n](#tunn3l-v1s10n)
+    - [Thought process and approach](#thought-process-and-approach-1)
+    - [Resources used](#resources-used-1)
+    - [Concepts and knowledge gained](#concepts-and-knowledge-gained)
+    - [The Flag](#the-flag-1)
+  - [m00nwalk](#m00nwalk)
+    - [Thought process and approach](#thought-process-and-approach-2)
+    - [Resources used:](#resources-used-2)
+    - [Concepts and knowledge gained](#concepts-and-knowledge-gained-1)
+    - [The FLAG:](#the-flag-2)
 
 ## Trivial Flag Transfer Protocol
 
@@ -60,4 +70,78 @@ The flag is:
 
 ```  
 picoCTF{h1dd3n_1n_pLa1n_51GHT_18375919}
+```
+
+## tunn3l v1s10n
+
+### Thought process and approach
+
+I downloaded `tunnel_vision` from the website and ran the `file` command on it but it didn't tell anything about the file type. Then I ran `exiftool` and it told me that the file is a bitmap image file.
+
+![](../resources/tunn3l_v1s10n/image.png)
+
+I renamed the file to `tunnel_vision.bmp` and tried opening it but I got an error saying the header might be corrupted. I opened the file in a hex editor and saw that the header was intact. I opened the wikipedia page for `BMP` files and read that the header is 14 bytes long and the last 4 bytes of the header dictate the offset of the pixel array. The header is 14 bytes long and the following `DIB header` is 40 bytes long so there is an offset of 54 bytes. I converted 54 to hex which is `36` and changed the last 4 bytes of the header to `36 00 00 00` but the image still did not open.
+
+I read more about the `DIB header` and read that the first 4 bytes dictate the size of the said header. The `DIB header` is 40 bytes long so I converted 40to hex which is `28` and changed the first four bytes to `28 00 00 00 ` and saved the file. Now the image actually opened but there was a decoy flag.
+
+![](../resources/tunn3l_v1s10n/tunn3l_v1s10n.bmp)
+
+The next 8 bytes of `DIB header` dictate the size of the image. The first 4 bytes of the `DIB header` dictate the width of the image and the next 4 four bytes dictate the height of the image. Our file's total size is 2893454 bytes. So subracting the headers from the size and dividing the width*3 since each pixel is 3 bytes, I got the height of the image to be 850. I converted 850 to hex which is `352` and changed the next 4 bytes of the `DIB header` to `52 03 00 00` and saved the file. Opening the file, I got the flag.
+
+![](../resources/tunn3l_v1s10n/tunn3l_v1s10n_fixed.bmp)
+
+### Resources used
+
+ - **exiftool**
+ - [Hexed.it](https://hexed.it/)
+ - Wikipedia page for `BMP` files
+  
+### Concepts and knowledge gained
+
+- Learnt about the structure of `BMP` files.
+- Got more comfortable with using a hex editor.
+
+### The Flag
+
+The flag is:
+
+``` 
+picoCTF{qu1t3_a_v13w_2020}
+```
+
+## m00nwalk
+
+### Thought process and approach 
+
+After downloading the `wav` file from the website, I tried using a morse decoder and a spectogram analyser but I could not find anything. I saw the hints and looked up which protocol NASA used to transmit the live telecast to televisons. They used the `SSTV` protocol and converted into `NTSC` format to transmit the live telecast. 
+
+![](https://i.imgur.com/JqCsFBS.png)
+
+I started looking for tools to decode `SSTV` to images. I came across this [tool](https://github.com/colaclanth/sstv). I cloned the repository and setup the package. After going through the descripton of the tool, I noticed that there are different modes for decoding the data. Incidently the second hint of the challenge mentioned that the mascot of the college might help us get the mode. After a quick google search, I found out that the mascot is called `Scotty` and is a Scottish Highland Terrier.
+
+![](https://i.imgur.com/hCRsxgr.png)
+
+One of the options mentioned in the tool was `Scottie 1, 2, DX` which corresponds with the mascot's name - `Scotty`
+
+![](https://i.imgur.com/FKf0HVL.png)
+
+The tool automatically detects the mode so I did not have to mention it. I ran `sstv -d message.wav -o output.png` and got an image. Opening the image, I found the flag.
+
+![alt text](../resources/m00nwalk/image.png)
+
+### Resources used:
+
+ - [SSTV tool](https://github.com/colaclanth/sstv)
+
+### Concepts and knowledge gained
+
+- Learnt about the `SSTV` protocol.
+- Learnt about how NASA's live telecast was transmitted to televisions.
+  
+### The FLAG:
+
+The flag is:
+
+```  
+picoCTF{beep_boop_im_in_space}
 ```
