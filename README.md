@@ -30,6 +30,8 @@ This repository contains all my writeups for cryptonite task phase 2.
    - [Cookies](./picoctf/Web_Exploitation.md#cookies)
  - [Cryptography](./picoctf/Cryptography.md)
    - [C3](./picoctf/Cryptography.md#c3)
+   - [Custom Encryption](./picoctf/Cryptography.md#custom-encryption)
+   - [miniRSA](./picoctf/Cryptography.md#minirsa)
  - [Binary Exploitation](./picoctf/Binary_Exploitation.md)
    - [Buffer Overflow 0](./picoctf/Binary_Exploitation.md#buffer-overflow-0)
    - [Format String 0](./picoctf/Binary_Exploitation.md#format-string-0)
