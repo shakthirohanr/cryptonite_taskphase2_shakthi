@@ -169,7 +169,7 @@ picoCTF{custom_d2cr0pt6d_66778b34}
 
 ### Thought process and approach
 
-In RSA encryption the message is encrypted by using the formula:
+Afer doing some research on youtube and on the internet, I found out that, in RSA encryption the message is encrypted by using the formula:
 
 ```
 ciphertext = message ^ e % n 
