@@ -18,6 +18,12 @@ This module is about forensics.
     - [Resources used:](#resources-used-2)
     - [Concepts and knowledge gained](#concepts-and-knowledge-gained-1)
     - [The FLAG:](#the-flag-2)
+  - [m00nwalk 2](#m00nwalk-2)
+    - [Thought process and approach](#thought-process-and-approach-3)
+    - [The Flag:](#the-flag-3)
+  - [MSB](#msb)
+    - [Thought process and approach](#thought-process-and-approach-4)
+    - [The Flag:](#the-flag-4)
 
 ## Trivial Flag Transfer Protocol
 
@@ -145,3 +151,49 @@ The flag is:
 ```  
 picoCTF{beep_boop_im_in_space}
 ```
+
+## m00nwalk 2
+
+### Thought process and approach 
+
+Like the previous m00nwalk challenge, I used the SSTV tool on the four `wav` files I downloaded on the website and got the following images:
+
+![](../resources/m00nwalk2/clue1.png)
+
+![](../resources/m00nwalk2/clue2.png)
+
+![](../resources/m00nwalk2/clue3.png)
+
+![](../resources/m00nwalk2/message.png)
+
+There seems to be a flag in `message.png` but it's the flag for `m00nwalk` challenge. In `clue3.png`, the words `Alan Eliasen the FutureBoy` are written. I searched for these words on google and found a website that had tools for Stenaography along with other tools. 
+
+![](../resources/m00nwalk2/image.png)
+
+Even the password provided in `clue1.png` hints at Stenaography. I thought the flag might be hidden in `message.png` so I used `Steghide` to look for hidden files. I was not able to find any hidden files in `message.png` and I was stuck. While reading up on steghide, I found that it can also be used for `wav` files. Using the password provided in `clue1.png`, I ran `steghide extract -sf message.wav -p hidden_stegosaurus` and got a file containing the flag
+
+### The Flag:
+
+```
+picoCTF{the_answer_lies_hidden_in_plain_sight}
+```
+
+## MSB
+
+### Thought process and approach
+
+In the challenge description, they mention `LSB statistical analysis` but I had no clue what it was so I searched for it on google. I found out that `LSB` stands for `Least Significant Bit` and is used in steganography to hide data in images. While reading up `LSB`, I came across `MSB` which stands for `Most Significant Bit`. The challenge name is `MSB` so I thought that the flag might be hidden using `MSB`. While looking for a tool to decode `MSB`, I came across [sigBits](https://github.com/Pulho/sigBits).
+
+I installed the dependecies and ran `sigBits.py` with the mode set as the `msb` and with the image downloaded from the website.
+
+![](../resources/MSB/image.png)
+
+It gave me a text file containing a lot of random sentences so I used `grep` to filter out the flag.
+
+![](../resources/MSB/2.png)
+
+### The Flag:
+
+```
+picoCTF{15_y0ur_que57_qu1x071c_0r_h3r01c_b5e03bc5}
+````

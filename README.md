@@ -24,6 +24,8 @@ This repository contains all my writeups for cryptonite task phase 2.
    - [Trivial Flag Transfer Protocol](./picoctf/Forensics.md#trivial-flag-transfer-protocol)
    - [tunn3l v1s10n](./picoctf/Forensics.md#tunn3l-v1s10n)
    - [m00nwalk](./picoctf/Forensics.md#m00nwalk)
+   - [m00nwalk 2](./picoctf/Forensics.md#m00nwalk-2)
+   - [MSB](./picoctf/Forensics.md#msb)
  - [Web Exploitation](./picoctf/Web_Exploitation.md)
    - [SOAP](./picoctf/Web_Exploitation.md#soap)
    - [Forbidden Paths](./picoctf/Web_Exploitation.md#forbidden-paths)
