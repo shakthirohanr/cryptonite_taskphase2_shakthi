@@ -30,6 +30,8 @@ This repository contains all my writeups for cryptonite task phase 2.
    - [SOAP](./picoctf/Web_Exploitation.md#soap)
    - [Forbidden Paths](./picoctf/Web_Exploitation.md#forbidden-paths)
    - [Cookies](./picoctf/Web_Exploitation.md#cookies)
+   - [Search source](./picoctf/Web_Exploitation.md#search-source)
+   - [MatchTheRegex](./picoctf/Web_Exploitation.md#matchtheregex)
  - [Cryptography](./picoctf/Cryptography.md)
    - [C3](./picoctf/Cryptography.md#c3)
    - [Custom Encryption](./picoctf/Cryptography.md#custom-encryption)
