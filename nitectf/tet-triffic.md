@@ -16,10 +16,9 @@ Then I moved onto the emulating keystokes on the fame part. I used Gemini to mod
 
 After working on this for 2 hours. It turned out that the QR code was broken. Then I got stuck on reparing the QR code for hours. Whatever I tried to do didn't seem to work. I recalled about a [video](https://www.youtube.com/watch?v=w5ebcowAJD8) from Versatium that I had watched on how QR codes worked. After painstakingly placing pixel after pixel on a pixel art website, I ended up with this:
 
-![](https://imgur.com/SMYeYP6)
+![](https://i.imgur.com/SMYeYP6.png)
 
 But even now I couldn't scan the QR code. As a last resort I googled qr code related ctf challenges and found a writeup that mentioned a webite called [Qrazybox](https://merri.cx/qrazybox/). I uploaded the image there and after going through some of the tools provided, I was able to get the flag.
-
 
 ## Flag
 
