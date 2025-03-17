@@ -22,4 +22,4 @@ But even now I couldn't scan the QR code. As a last resort I googled qr code rel
 
 ## Flag
 
-![](https://imgur.com/GjgUu1a)
+![](https://i.imgur.com/GjgUu1a.png)
